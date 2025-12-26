@@ -1,6 +1,23 @@
 <?php
 include 'BD_connexion.php';
 
+$sql_EC = "SELECT 1 FROM user WHERE email = :1 LIMIT 1";
+$stmt = $gd->prepare($sql_EC);
+$stmt -> bindParam(":1", $_POST['email'], PDO::PARAM_STR);
+$stmt->execute();
+
+if ($stmt->fetchColumn()) {
+    header("Location: register.php?error=1");
+    exit;
+}
+
+?>
+
+
+
+
+<?php
+
 // INSERT
 $sql = "INSERT INTO user (email, password) VALUES (:email, :pw)";
 $stmt = $gd->prepare($sql);

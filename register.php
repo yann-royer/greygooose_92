@@ -11,12 +11,17 @@
         <form method="POST" action="register2.php">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" placeholder="Write your email">
-
+            <?php
+                if (isset($_GET['error']) && $_GET['error']==1) {
+                    echo"<p style='color:red'>This email adress is already associated to an account</p>";
+                }
+            ?>
             <label for="pw">Password</label>
             <input type="password" name="pw" id="pw" placeholder="Write your password">
 
             <button type="submit">Register</button>
         </form>
+        
     </div>
 </body>
 </html>
