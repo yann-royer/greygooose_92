@@ -1,0 +1,36 @@
+<?php
+
+include 'BD_connexion.php';
+
+if (!isset($_POST['email'], $_POST['pw'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// 1️⃣ Une seule requête
+$sql = "SELECT * FROM user WHERE email = :email";
+$stmt = $gd->prepare($sql);
+$stmt->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+$stmt->execute();
+
+// 2️⃣ Récupération de l'utilisateur
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// 3️⃣ Email inexistant
+if (!$user) {
+    header('Location: login.php?error=1');
+    exit;
+}
+
+// 4️⃣ Mot de passe incorrect 
+if ($user['password'] !== $_POST['pw']) {
+    header('Location: login.php?error=2');
+    exit;
+}
+
+// 5️⃣ Login OK
+include 'start_session.php';
+$_SESSION['user_id'] = $user['id'];
+
+header('Location: main_page.php');
+exit;

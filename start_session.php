@@ -1,0 +1,8 @@
+<?php
+
+session_start();
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_name'] = $user['name'];
+$_SESSION['user_family_name'] = $user['family_name'];
+$_SESSION['user_pp'] = $user['pp'];
+$_SESSION['user_gender'] = $user['gender'];
