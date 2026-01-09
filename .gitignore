@@ -1,0 +1,5 @@
+# Ignore tout le contenu du dossier pp
+uploads/pp/*
+
+# MAIS garder l'image par défaut
+!uploads/pp/default.webp
