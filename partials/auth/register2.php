@@ -1,17 +1,19 @@
 
 
 <?php
+// Chargement de la configuration globale (BASE_URL, constantes, etc.)
+require_once __DIR__ . '/../../config.php';
+// INCLUDE PHP (chemins système)
+include __DIR__ . '/../db/BD_connexion.php';
+
 // CHECK EMAIL EXISTS
-
-include 'BD_connexion.php';
-
 $sql_EC = "SELECT 1 FROM user WHERE email = :1 LIMIT 1";
 $stmt = $gd->prepare($sql_EC);
 $stmt->bindParam(":1", $_POST['email'], PDO::PARAM_STR);
 $stmt->execute();
 
 if ($stmt->fetchColumn()) {
-    header("Location: register.php?error=1");
+    header("Location: " . BASE_URL . "/pages/public/register.php?error=1");
     exit;
 }
 
@@ -49,7 +51,7 @@ if ($okSelect && $stmt->rowCount() > 0) {
     $_SESSION['user_id'] = $user['id'];
 
     // Redirection vers la page de complétion du profil
-    header("Location: register3.html");
+    header("Location: " . BASE_URL . "/pages/private/register3.php");  // remplacer register3.html plus tard par modification_profil.php
 
     exit;
 } else {

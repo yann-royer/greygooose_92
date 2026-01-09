@@ -1,3 +1,8 @@
+<?php
+// Chargement de la configuration globale (BASE_URL, constantes, etc.)
+require_once __DIR__ . '/../../config.php';
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -15,7 +20,7 @@
 		</table>
 		<h1>Start sharing</h1>
 		<p>Log in to access to all of our fonctionnalities</p>
-		<form method="POST" action="login2.php">
+		<form method="POST" action="<?= BASE_URL ?>/partials/auth/login2.php"> <!-- remplacer login2.php par login_handler.php plus tard -->
 			<label for="email">Email</label>
 			<input type="email" name="email" id="email" placeholder="Write your email">
 
@@ -33,8 +38,8 @@
 
 			<button type="submit">Log in</button>
 		</form>
-		<a href="forget_pw.php">I forgot my password</a>
-		<a href="register.php">Create my account</a>
+		<a href="<?= BASE_URL ?>/pages/public/forget_pw.php">I forgot my password</a>
+		<a href="<?= BASE_URL ?>/pages/public/register.php">Create my account</a>
 </body>
 
 </html>

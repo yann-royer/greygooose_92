@@ -1,6 +1,9 @@
 <?php
-include 'auth_check.php';
-include 'BD_connexion.php';
+// Chargement de la configuration globale (BASE_URL, constantes, etc.)
+require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../auth/auth_check.php';
+// INCLUDE PHP (chemins système)
+include __DIR__ . '/../db/BD_connexion.php';
 
 
 $gender = null;
@@ -17,8 +20,10 @@ if (isset($_POST['gender'])) {
 
 $ppPathToStore = null; // ce qu'on va stocker en DB (ex: uploads/profile_pics/abc.jpg)
 
-$uploadDir = __DIR__ . '/uploads/pp/';   // emplacement physique
-$publicDir = 'uploads/pp/';              // chemin public stocké en DB
+
+$uploadDir = __DIR__ . '/../../uploads/pp/'; // chemin physique
+$publicDir = BASE_URL . '/uploads/pp/';      // chemin public (URL)  chemin public stocké en DB
+
 
 
 // Si un fichier a été envoyé
@@ -104,7 +109,7 @@ if ($ok) {
     $_SESSION['user_pp'] = $ppPathToStore;
     $_SESSION['user_gender'] = $_POST['gender'];
 
-    header("Location: main_page.php");
+    header("Location:" . BASE_URL . "/pages/private/main_page.php");
     exit;
 } else {
     echo "<p>Erreur base de données.</p>";

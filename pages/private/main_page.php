@@ -1,10 +1,11 @@
 <?php
-include 'auth_check.php';
+require_once __DIR__ . '/../../partials/auth/auth_check.php';
+
 
 //gestion de la pp
 $profilePic = !empty($_SESSION['user_pp'])
 	? $_SESSION['user_pp']
-	: 'uploads/pp/default.webp'; // image par défaut
+	: BASE_URL . '/uploads/pp/default.webp'; // image par défaut
 
 ?>
 
@@ -16,7 +17,7 @@ $profilePic = !empty($_SESSION['user_pp'])
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Greygoose</title>
-	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 
 <body>
@@ -31,7 +32,7 @@ $profilePic = !empty($_SESSION['user_pp'])
 		height="300px">
 
 	<br>
-	<a href="close_session.php">Log out</a>
+	<a href="<?= BASE_URL ?>/partials/session/close_session.php">Log out</a>
 </body>
 
 </html>

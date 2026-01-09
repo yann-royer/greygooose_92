@@ -1,9 +1,10 @@
 <?php
-
-include 'BD_connexion.php';
+require_once __DIR__ . '/../../config.php';
+// INCLUDE PHP (chemins système)
+include __DIR__ . '/../db/BD_connexion.php';
 
 if (!isset($_POST['email'], $_POST['pw'])) {
-    header('Location: login.php');
+    header('Location: ' . BASE_URL . '/pages/public/login.php');
     exit;
 }
 
@@ -18,19 +19,19 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // 3️⃣ Email inexistant
 if (!$user) {
-    header('Location: login.php?error=1');
+    header('Location: ' . BASE_URL . '/pages/public/login.php?error=1');
     exit;
 }
 
 // 4️⃣ Mot de passe incorrect 
 if ($user['password'] !== $_POST['pw']) {
-    header('Location: login.php?error=2');
+    header('Location: ' . BASE_URL . '/pages/public/login.php?error=2');
     exit;
 }
 
 // 5️⃣ Login OK
-include 'start_session.php';
+include __DIR__ . '/../session/start_session.php';
 $_SESSION['user_id'] = $user['id'];
 
-header('Location: main_page.php');
+header('Location: ' . BASE_URL . '/pages/private/main_page.php');
 exit;

@@ -1,5 +1,5 @@
 <?php
-include 'auth_check.php';
+require_once __DIR__ . '/../../partials/auth/auth_check.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +17,7 @@ include 'auth_check.php';
     <h1>Tell us more about yourself</h1>
     <br />
 
-    <form enctype="multipart/form-data" method="POST" action="register4.php">
+    <form enctype="multipart/form-data" method="POST" action="<?= BASE_URL ?>/partials/auth/register4.php">
       <label for="profile_pic">Profile picture</label>
       <input
         type="file"
