@@ -1,9 +1,14 @@
 <?php
+
+// Chargement de la configuration globale (BASE_URL, constantes, etc.)
+require_once __DIR__ . '/../../config.php';
+
+
 session_start();
 
 // Vérification connexion (pages protégées)
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /pages/public/login.php");
+    header('Location: ' . BASE_URL . '/pages/public/login.php');
     exit;
 }
 ?>
@@ -16,7 +21,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <title>Dessarollo</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
     <!-- Bootstrap plus tard : css -->
 </head>
 

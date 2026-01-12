@@ -7,8 +7,12 @@ GREYGOOSE_92/
 │   │   └── forget_pw.php
 │   │
 │   └── private/
-│       └── main_page.php
-|       └── register3.php       
+│       ├── main_page.php
+|       ├──register3.php 
+│       ├──activity_feed.php      → voir les activités (feed)
+│       ├──activity_view.php      → voir UNE activité
+│       └──activity_form.php      → formulaire créer / modifier
+│       
 │
 ├── partials/
 │   ├── auth/
@@ -22,7 +26,8 @@ GREYGOOSE_92/
 │   │
 │   ├── layout/
 │   │   ├── header.php
-│   │   └── footer.php
+│   │   ├── footer.php
+│   │   └── navbar.php        
 │   │
 │   ├── db/
 │   │   └── db_connection.php
