@@ -1,0 +1,35 @@
+.kudo-btn {
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: background 0.2s ease, color 0.2s ease;
+
+    /* état inactif */
+    background: #f1f3f5;
+    color: #6c757d;
+}
+
+/* état actif */
+.kudo-btn.active {
+    background: #ff6b00; /* Orange Astra */
+    color: white;
+}
+
+/* IMPORTANT : on NE TOUCHE PAS à l’icône */
+.kudo-icon {
+    filter: none;
+    opacity: 1;
+}
+
+.kudo-btn:hover {
+    background: #e9ecef;
+}
+
+.kudo-btn.active:hover {
+    background: #e65f00;
+}
