@@ -10,10 +10,10 @@ function formatAllure($duration, $distance)
 
     return sprintf("%d:%02d /km", $minutes, $seconds);
 }
-?>
 
-<!-- format.php = fct pour le formatage de la durée -->
-<?php
+
+//<!-- format.php = fct pour le formatage de la durée -->
+
 function formatDuration($seconds)
 {
     if ($seconds <= 0) return '0s';
@@ -39,10 +39,10 @@ function formatDuration($seconds)
 
     return implode(' ', $parts);
 }
-?>
 
-<!-- activity_feed.php = fct pour le formatage de la date d'activité -->
-<?php
+
+//<!-- activity_feed.php = fct pour le formatage de la date d'activité -->
+
 
 function formatActivityDate($dateTime)
 {
@@ -74,4 +74,28 @@ function formatActivityDate($dateTime)
 
     // Date complète (mois anglais)
     return $activityDate->format('M j, Y');
+}
+
+
+// activity_feed.php = fct pour le formatage de la date des commentaires 
+function formatCommentDate(string $datetime): string
+{
+    $commentDate = new DateTime($datetime);
+    $now = new DateTime();
+
+    $today = $now->format('Y-m-d');
+    $commentDay = $commentDate->format('Y-m-d');
+
+    if ($commentDay === $today) {
+        return 'Today at ' . $commentDate->format('H:i');
+    }
+
+    // Optionnel : hier
+    $yesterday = (clone $now)->modify('-1 day')->format('Y-m-d');
+    if ($commentDay === $yesterday) {
+        return 'Yesterday at ' . $commentDate->format('H:i');
+    }
+
+    // Autres jours
+    return $commentDate->format('F j \a\t H:i');
 }

@@ -1,3 +1,5 @@
+
+/* Bouton Kudo */
 .kudo-btn {
     border: none;
     cursor: pointer;
@@ -33,3 +35,56 @@
 .kudo-btn.active:hover {
     background: #e65f00;
 }
+
+
+/* commentaires */
+
+/* CONTAINER DES COMMENTAIRES */
+.comments-container {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* UN COMMENTAIRE */
+.comment {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+/* PHOTO DE PROFIL */
+.comment-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #ddd;
+}
+
+/* TEXTE DU COMMENTAIRE */
+.comment div {
+    background: #f6f6f6;
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 100%;
+}
+
+/* NOM DE L'UTILISATEUR */
+.comment strong {
+    font-size: 14px;
+    color: #222;
+}
+
+/* CONTENU */
+.comment span {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.4;
+}
+
+
