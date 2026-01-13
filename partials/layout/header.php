@@ -2,6 +2,8 @@
 
 // Chargement de la configuration globale (BASE_URL, constantes, etc.)
 require_once __DIR__ . '/../../config.php';
+// connexion à la BDD
+require_once __DIR__ . '/../../partials/db/BD_connexion.php';
 
 
 session_start();
