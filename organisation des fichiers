@@ -1,41 +1,57 @@
 GREYGOOSE_92/
 │
+├── css/
+│   └── styles.css
+│
 ├── pages/
-│   ├── public/
-│   │   ├── login.php
-│   │   ├── register.php
-│   │   └── forget_pw.php
+│   ├── private/
+│   │   ├── activity_feed.php
+│   │   ├── main_page.php
+│   │   └── register3.php
 │   │
-│   └── private/
-│       ├── main_page.php
-|       ├──register3.php 
-│       ├──activity_feed.php      → voir les activités (feed)
-│       ├──activity_view.php      → voir UNE activité
-│       └──activity_form.php      → formulaire créer / modifier
-│       
+│   └── public/
+│       ├── forget_pw.php
+│       ├── login.php
+│       └── register.php
 │
 ├── partials/
+│   ├── activities/
+│   │   ├── comments_add_ajax.php
+│   │   ├── comments_delete_ajax.php
+│   │   ├── comments_edit_ajax.php
+│   │   ├── comments_fetch_ajax.php
+│   │   └── kudo_toggle_ajax.php
+│   │
 │   ├── auth/
 │   │   ├── auth_check.php
-│   │   ├── login_handler.php
-│   │   ├── register_handler.php
-│   │   ├── register_step_2.php
-│   │   ├── register_step_3.php
-│   │   ├── register_step_4.php
-│   │   └── forget_pw_handler.php
-│   │
-│   ├── layout/
-│   │   ├── header.php
-│   │   ├── footer.php
-│   │   └── navbar.php        
+│   │   ├── forget_pw2.php
+│   │   ├── login2.php
+│   │   ├── register2.php
+│   │   └── register4.php
 │   │
 │   ├── db/
-│   │   └── db_connection.php
+│   │   └── BD_connexion.php
+│   │
+│   ├── helpers/
+│   │   └── format.php
+│   │
+│   ├── home/
+│   │   ├── js/
+│   │   │   └── activity_feed.js
+│   │   ├── activity_feed.php
+│   │   └── profile_sidebar.php
+│   │
+│   ├── layout/
+│   │   ├── footer.php
+│   │   ├── header.php
+│   │   └── nav.php
 │   │
 │   └── session/
-│       ├── start_session.php
-│       └── close_session.php
+│       ├── close_session.php
+│       └── start_session.php
 │
 ├── uploads/
 │
-└── .gitignore
+├── .gitignore
+├── config.php
+└── organisation_des_fichiers

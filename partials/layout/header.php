@@ -17,6 +17,8 @@ if (!isset($_SESSION['user_id'])) {
 
 <!-- Header commun à toutes les pages -->
 
+
+
 <!DOCTYPE html>
 <html lang="fr">
 

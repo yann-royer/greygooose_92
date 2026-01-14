@@ -62,9 +62,13 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php else : ?>
         <?php foreach ($activities as $activity) : ?>
 
-            <article class="activity-card">
+            <article
+                class="activity-card"
+                data-activity-id="<?= $activity['id'] ?>">
 
-                <div class="activity-user">
+
+                <div class="activity-user activity-clickable">
+
                     <img src="<?= htmlspecialchars($activity['pp']) ?>" class="activity-avatar">
 
                     <div>
@@ -78,7 +82,8 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-                <ul class="activity-data">
+                <ul class="activity-data activity-clickable">
+
                     <li><strong>Sport :</strong> <?= htmlspecialchars($activity['sport_name']) ?></li>
                     <li><strong>Distance :</strong> <?= htmlspecialchars($activity['distance']) ?> km</li>
                     <li><strong>Temps :</strong> <?= formatDuration($activity['duration']) ?></li>
@@ -124,6 +129,7 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </section>
 
 <script>
-    const CURRENT_USER_ID = <?= (int)$_SESSION['user_id'] ?>;
+    window.CURRENT_USER_ID = <?= (int)$_SESSION['user_id'] ?>;
 </script>
+
 <script src="<?= BASE_URL ?>/partials/home/activity_feed.js"></script>

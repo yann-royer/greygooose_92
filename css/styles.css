@@ -376,3 +376,26 @@ body {
 .comment-submit:hover {
     background: #e65f00;
 }
+
+
+
+
+.activity-clickable {
+    cursor: pointer;
+}
+
+.activity-actions button,
+.comment-form textarea {
+    cursor: default;
+}
+
+
+/* =====================================================
+   ACTIVITY VIEW – SCROLL
+   ===================================================== */
+
+.activity-view-container {
+    overflow-y: auto;
+    height: calc(100vh - 60px); /* navbar */
+    padding: 24px;
+}

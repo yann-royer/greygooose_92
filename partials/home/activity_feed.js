@@ -327,4 +327,18 @@ document.addEventListener('click', async (e) => {
         commentDiv.querySelector('.comment-content').textContent =
             textarea.defaultValue;
     }
+    /* =======================
+    ACTIVITY VIEW NAV
+    ======================= */
+    const clickable = e.target.closest('.activity-clickable');
+    if (clickable) {
+        const card = clickable.closest('.activity-card');
+        const activityId = card.dataset.activityId;
+
+        if (!activityId) return;
+
+        window.location.href =
+            `/greygooose_92/pages/private/activity_view.php?id=${activityId}`;
+    }
+
 });
