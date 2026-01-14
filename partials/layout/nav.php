@@ -17,7 +17,7 @@
 
         <li>
             <a class="navbar-link <?= ($currentPage ?? '') === 'activity' ? 'active' : '' ?>"
-                href="<?= BASE_URL ?>/pages/private/activity_feed.php">
+                href="<?= BASE_URL ?>/pages/private/activity_form.php">
                 Nouvelle activité
             </a>
         </li>

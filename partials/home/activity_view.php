@@ -66,21 +66,75 @@ $sql = "
 
 
 
-
 $stmt = $gd->prepare($sql);
 $stmt->execute([
     'id' => $activityId,
     'current_user' => $_SESSION['user_id']
 ]);
-$activity = $stmt->fetch();
-$isOwner = isset($_SESSION['user_id']) && $_SESSION['user_id'] === (int)$activity['user_id'];
 
-// 3. Activité inexistante
+$activity = $stmt->fetch();
+
+/* 1️⃣ ACTIVITÉ INEXISTANTE */
 if (!$activity) {
     http_response_code(404);
-    echo "<p>Cette activité n'existe pas.</p>";
-    return;
+    echo "<p>This activity does not exist.</p>";
+    exit;
 }
+
+/* 2️⃣ OWNER CHECK */
+$isOwner = isset($_SESSION['user_id'])
+    && $_SESSION['user_id'] === (int) $activity['user_id'];
+
+/* 3️⃣ FOLLOWER CHECK (only if needed) */
+$isFollower = false;
+
+if (
+    isset($_SESSION['user_id'])
+    && !$isOwner
+    && $activity['visibility'] === 'friends'
+) {
+    $rel = $gd->prepare("
+        SELECT 1
+        FROM relations
+        WHERE user_id = :viewer
+          AND target_id = :owner
+          AND status = 'accepted'
+        LIMIT 1
+    ");
+    $rel->execute([
+        'viewer' => $_SESSION['user_id'],
+        'owner' => $activity['user_id']
+    ]);
+
+    $isFollower = (bool) $rel->fetch();
+}
+
+/* 4️⃣ VISIBILITY RULES */
+
+/* 🔐 PRIVATE */
+if (
+    $activity['visibility'] === 'private'
+    && !$isOwner
+) {
+    http_response_code(403);
+    echo "<h2>Private activity</h2>";
+    echo "<p>This activity is private and only visible to its owner.</p>";
+    exit;
+}
+
+/* 🔐 FOLLOWERS */
+if (
+    $activity['visibility'] === 'friends'
+    && !$isOwner
+    && !$isFollower
+) {
+    http_response_code(403);
+    echo "<h2>Followers only</h2>";
+    echo "<p>This activity is visible only to followers.</p>";
+    exit;
+}
+/* 5️⃣ AFFICHAGE */
+
 ?>
 <div class="main-layout">
     <div class="main-right activity-view-container">
@@ -102,7 +156,7 @@ if (!$activity) {
 
                         <!-- BOUTON MODIFIER -->
                         <form
-                            action="<?= BASE_URL ?>/partials/activities/activity_edit_redirect.php"
+                            action="<?= BASE_URL ?>/pages/private/activity_form.php"
                             method="GET"
                             style="display:inline;">
 

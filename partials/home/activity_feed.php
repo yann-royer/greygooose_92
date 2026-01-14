@@ -36,7 +36,11 @@ $sql = "
 
     WHERE
         a.user_id = :user_id
-        OR r.id IS NOT NULL
+        OR (
+            r.id IS NOT NULL
+            AND a.visibility IN ('public', 'friends' )
+        )
+
 
     GROUP BY a.id
     ORDER BY a.date_time DESC
