@@ -3,23 +3,26 @@
 require_once __DIR__ . "/../../partials/helpers/format.php";
 ?>
 
-<!--inclue le header qui contient : la barre de nav et le debut de lastructure HTML-->
-<?php require __DIR__ . "/../../partials/layout/header.php"; ?>
+<!--inclue le header qui contient : la barre de nav et le debut de la structure HTML-->
+<?php
+$currentPage = 'activity';
+require __DIR__ . "/../../partials/layout/header.php";
+?>
+
 
 <!-- Contenu spécifique à la page principale privée -->
 
 <h1>Flux d'activités</h1>
 <p>Bienvenue sur votre flux d'activités privé !</p>
 
-<!-- requete php pour recupérer les activiters -->
-
+<!-- requete php pour recupérer les activitées -->
 <?php
 $userId = $_SESSION['user_id'];
 
 $sql = "
     SELECT
         a.id,
-        a.sport,
+        s.name AS sport_name,
         a.title,
         a.distance,
         a.duration,
@@ -36,18 +39,27 @@ $sql = "
 
     FROM Activity a
     JOIN user u ON a.user_id = u.id
+    JOIN sports s ON s.id = a.sport
+
+
+    /* 🔥 JOIN RELATIONS */
+    LEFT JOIN relations r
+        ON r.target_id = a.user_id
+        AND r.user_id = :user_id
+        AND r.status = 'accepted'
 
     LEFT JOIN kudos k ON k.activity_id = a.id
     LEFT JOIN comments c ON c.activity_id = a.id
 
-    WHERE a.user_id = :user_id
+    /* 🔥 CONDITIONS FEED */
+    WHERE
+        a.user_id = :user_id
+        OR r.id IS NOT NULL
 
     GROUP BY a.id
     ORDER BY a.date_time DESC
     LIMIT 20
 ";
-
-
 
 $stmt = $gd->prepare($sql);
 $stmt->execute([
@@ -56,19 +68,13 @@ $stmt->execute([
 ]);
 
 $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-
 ?>
 
 
-
-
-
-<!-- Affichage des activités -->
+<!--                 Affichage des activités                       -->
 <main class="activity-feed">
 
-    <h1>Mes activités</h1>
+    <h1>Activités récentes</h1>
 
     <?php if (empty($activities)) : ?>
         <p>Aucune activité pour le moment.</p>
@@ -98,7 +104,7 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <!-- CONTENT ACTIVITY -->
                 <ul class="activity-data">
-                    <li><strong>Sport :</strong> <?= htmlspecialchars($activity['sport']) ?></li>
+                    <li><strong>Sport :</strong> <?= htmlspecialchars($activity['sport_name']) ?></li>
                     <li><strong>Distance :</strong> <?= htmlspecialchars($activity['distance']) ?> km</li>
                     <li>
                         <strong>Temps :</strong>
@@ -158,7 +164,10 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 </main>
 
-<!-- JS pour le kudo toggle AJAX et commentaires -->
+
+
+
+<!--              JS pour le kudo toggle AJAX et commentaires                     -->
 <script>
     //<!--  fct pour le formatage de la date de commentaire -->
     function formatCommentDate(sqlDate) {
@@ -249,12 +258,18 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 const container = document.getElementById('comments-' + activityId);
 
                 /* toggle affichage */
+                const form = container.nextElementSibling;
+
                 if (container.style.display === 'none') {
                     container.style.display = 'block';
+                    form.style.display = 'block';
                 } else {
                     container.style.display = 'none';
+                    form.style.display = 'none';
                     return;
                 }
+                form.querySelector('.comment-input').value = '';
+
 
                 /* déjà chargé */
                 if (container.dataset.loaded === "1") return;
@@ -496,8 +511,6 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 `;
             }
 
-
-
             /* =======================
             COMMENT EDIT SAVE 
             ======================= */
@@ -536,7 +549,6 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
             }
 
-
             /* =======================
             COMMENT EDIT CANCEL 
             ======================= */
@@ -549,8 +561,6 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 commentDiv.querySelector('.comment-content').textContent =
                     textarea.defaultValue;
             }
-
-
 
         });
     });

@@ -1,90 +1,378 @@
+/* =====================================================
+   0️⃣ RESET MINIMAL & BASE
+   ===================================================== */
 
-/* Bouton Kudo */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f8f9fa;
+    color: #333;
+}
+
+/* =====================================================
+   1️⃣ NAVBAR PRINCIPALE (STICKY)
+   ===================================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* Liste horizontale */
+.navbar-list {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    list-style: none;
+    margin: 0;
+    padding: 12px 24px;
+}
+
+/* Liens → boutons */
+.navbar-link {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #333;
+    background: #f1f3f5;
+
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.navbar-link:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+/* Page active */
+.navbar-link.active {
+    background: #ff6b00;
+    color: #ffffff;
+}
+
+/* Déconnexion */
+.navbar-link.logout {
+    background: #ffe3e3;
+    color: #c92a2a;
+}
+
+.navbar-link.logout:hover {
+    background: #ffc9c9;
+}
+
+/* Responsive navbar */
+@media (max-width: 900px) {
+    .navbar-list {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* =====================================================
+   2️⃣ GESTION DU SCROLL (DESKTOP)
+   👉 empêche le scroll global
+   ===================================================== */
+
+@media (min-width: 901px) {
+    body {
+        overflow: hidden; /* ⛔ scroll global */
+    }
+}
+
+/* =====================================================
+   3️⃣ LAYOUT PRINCIPAL (SIDEBAR + FEED)
+   ===================================================== */
+
+.main-layout {
+    display: flex;
+    gap: 24px;
+
+    max-width: 1300px;
+    margin: 0 auto;
+
+    /* hauteur écran - navbar */
+    height: calc(100vh - 60px);
+    padding: 24px;
+}
+
+/* =====================================================
+   4️⃣ SIDEBAR GAUCHE (FIXE / STABLE)
+   ===================================================== */
+
+.main-left {
+    width: 300px;
+    flex-shrink: 0;
+
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+
+    /* bonus */
+    position: sticky;
+    top: 0;
+
+    /* si jamais trop de contenu */
+    overflow-y: auto;
+}
+
+/* =====================================================
+   5️⃣ FEED DROIT (SCROLL INDÉPENDANT)
+   ===================================================== */
+
+.main-right {
+    flex: 1;
+    min-width: 0;
+
+    overflow-y: auto; /* ✅ scroll ici */
+    padding-right: 6px; /* évite couper l’ombre */
+}
+
+/* =====================================================
+   6️⃣ RESPONSIVE MOBILE
+   👉 retour au scroll normal
+   ===================================================== */
+
+@media (max-width: 900px) {
+    body {
+        overflow: auto;
+    }
+
+    .main-layout {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+    }
+
+    .main-left,
+    .main-right {
+        width: 100%;
+        position: static;
+        overflow: visible;
+    }
+}
+
+/* =====================================================
+   7️⃣ FEED D’ACTIVITÉS
+   ===================================================== */
+
+.activity-feed h2 {
+    margin: 0 0 16px;
+}
+
+/* Carte activité */
+.activity-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Header utilisateur */
+.activity-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.activity-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Données activité */
+.activity-data {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+}
+
+.activity-data li {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+/* =====================================================
+   8️⃣ ACTIONS (KUDO / COMMENTAIRES)
+   ===================================================== */
+
+.activity-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* KUDO */
 .kudo-btn {
     border: none;
     cursor: pointer;
+
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 18px;
+
+    font-size: 14px;
     padding: 6px 12px;
     border-radius: 999px;
-    transition: background 0.2s ease, color 0.2s ease;
 
-    /* état inactif */
     background: #f1f3f5;
     color: #6c757d;
-}
 
-/* état actif */
-.kudo-btn.active {
-    background: #ff6b00; /* Orange Astra */
-    color: white;
-}
-
-/* IMPORTANT : on NE TOUCHE PAS à l’icône */
-.kudo-icon {
-    filter: none;
-    opacity: 1;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .kudo-btn:hover {
     background: #e9ecef;
 }
 
+.kudo-btn.active {
+    background: #ff6b00;
+    color: #ffffff;
+}
+
 .kudo-btn.active:hover {
     background: #e65f00;
 }
 
+/* Commentaires */
+.comment-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
 
-/* commentaires */
+    font-size: 14px;
+    color: #555;
+}
 
-/* CONTAINER DES COMMENTAIRES */
+.comment-btn:hover {
+    text-decoration: underline;
+}
+
+/* =====================================================
+   9️⃣ COMMENTAIRES – LISTE
+   ===================================================== */
+
 .comments-container {
     margin-top: 12px;
-    padding-top: 8px;
+    padding-top: 12px;
     border-top: 1px solid #e5e5e5;
 }
 
-/* UN COMMENTAIRE */
 .comment {
     display: flex;
-    align-items: flex-start;
     gap: 12px;
-    padding: 10px 0;
+    margin-bottom: 12px;
 }
 
-/* PHOTO DE PROFIL */
 .comment-avatar {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    flex-shrink: 0;
-    border: 1px solid #ddd;
 }
 
-/* TEXTE DU COMMENTAIRE */
-.comment div {
+.comment-body {
     background: #f6f6f6;
     padding: 10px 14px;
     border-radius: 12px;
-    max-width: 100%;
+    width: 100%;
 }
 
-/* NOM DE L'UTILISATEUR */
-.comment strong {
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.comment-header strong {
     font-size: 14px;
-    color: #222;
 }
 
-/* CONTENU */
-.comment span {
-    display: block;
-    margin-top: 4px;
+.comment-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.comment-content {
     font-size: 14px;
     color: #444;
-    line-height: 1.4;
 }
 
+/* =====================================================
+   🔟 COMMENTAIRES – ACTIONS
+   ===================================================== */
 
+.comment-actions {
+    margin-top: 6px;
+    display: flex;
+    gap: 10px;
+}
+
+.comment-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: #666;
+}
+
+.comment-actions button:hover {
+    color: #000;
+}
+
+/* =====================================================
+   1️⃣1️⃣ FORMULAIRE COMMENTAIRE
+   ===================================================== */
+
+.comment-form {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.comment-input {
+    flex: 1;
+    resize: none;
+
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+
+    font-size: 14px;
+}
+
+.comment-submit {
+    border: none;
+    background: #ff6b00;
+    color: #ffffff;
+
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.comment-submit:hover {
+    background: #e65f00;
+}

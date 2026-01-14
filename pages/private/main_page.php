@@ -1,32 +1,20 @@
-<!--inclue le header qui contient : la barre de nav et le debut de lastructure HTML-->
-<?php require __DIR__ . "/../../partials/layout/header.php"; ?>
-
-
-<!-- Contenu spécifique à la page principale privée -->
-
 <?php
-//gestion de la pp
-$profilePic = !empty($_SESSION['user_pp'])
-	? $_SESSION['user_pp']
-	: BASE_URL . '/uploads/pp/default.webp'; // image par défaut
+$currentPage = 'home';
+require __DIR__ . "/../../partials/layout/header.php";
 ?>
 
-<h1>Binevenue chez greygooose 92</h1>
+<div class="main-layout">
 
-<h2>
-	Hello <?= htmlspecialchars($_SESSION['user_name']) ?>
-	<?= htmlspecialchars($_SESSION['user_family_name']) ?> !
-</h2>
+	<!-- COLONNE GAUCHE : PROFIL -->
+	<aside class="main-left">
+		<?php require __DIR__ . "/../../partials/home/profile_sidebar.php"; ?>
+	</aside>
 
-<img
-	src="<?= htmlspecialchars($profilePic) ?>"
-	alt="Photo de profil"
-	class="profile-pic"
-	height="300px">
+	<!-- COLONNE DROITE : FEED -->
+	<section class="main-right">
+		<?php require __DIR__ . "/../../partials/home/activity_feed.php"; ?>
+	</section>
 
-<br>
-<a href="<?= BASE_URL ?>/partials/session/close_session.php">Log out</a>
+</div>
 
-
-<!--inclue le footer qui contient : la fin de la structure HTML-->
 <?php require __DIR__ . "/../../partials/layout/footer.php"; ?>
