@@ -20,6 +20,23 @@ if (isset($_GET['id']) && ctype_digit($_GET['id'])) {
 
     $activity = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    $activityPhotos = [];
+
+    if ($isEdit) {
+        $stmt = $gd->prepare("
+            SELECT id, link
+            FROM photo
+            WHERE activity_id = :activity_id
+            ORDER BY id ASC
+        ");
+        $stmt->execute([
+            'activity_id' => $activityId
+        ]);
+
+        $activityPhotos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     if (!$activity) {
         http_response_code(403);
         echo "<p>Access denied.</p>";
@@ -36,6 +53,7 @@ if (isset($_GET['id']) && ctype_digit($_GET['id'])) {
         <form
             action="<?= BASE_URL ?>/partials/activities/activity_save.php"
             method="POST"
+            enctype="multipart/form-data"
             class="activity-form">
 
             <?php if ($isEdit): ?>
@@ -147,6 +165,53 @@ if (isset($_GET['id']) && ctype_digit($_GET['id'])) {
                 </select>
             </div>
 
+            <!-- PHOTOS -->
+
+            <?php if ($isEdit && !empty($activityPhotos)): ?>
+                <div class="form-group">
+                    <label>Photos existantes</label>
+
+                    <div class="activity-photos-edit">
+                        <?php foreach ($activityPhotos as $photo): ?>
+                            <div class="photo-item">
+                                <img src="<?= BASE_URL . '/' . htmlspecialchars($photo['link']) ?>" alt="">
+
+                                <button
+                                    type="button"
+                                    class="delete-photo-btn"
+                                    data-photo-id="<?= $photo['id'] ?>">
+                                    ✕
+                                </button>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+
+
+
+
+
+            <div class="form-group">
+                <label for="photos">Photos de l activité</label>
+
+                <input
+                    type="file"
+                    name="photos[]"
+                    id="photos"
+                    multiple
+                    accept="image/*">
+
+                <small>
+                    Tu peux sélectionner plusieurs images (jpg, png, webp) :
+                    Astuce : sélectionne toutes les photos en une seule fois
+                    (Ctrl / Cmd + clic)
+
+                </small>
+            </div>
+
+
             <!-- ACTIONS -->
             <div class="form-actions">
                 <button type="submit" class="btn-primary">
@@ -165,3 +230,32 @@ if (isset($_GET['id']) && ctype_digit($_GET['id'])) {
 
     </div>
 </div>
+
+
+
+<script>
+    document.querySelectorAll('.delete-photo-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+
+            if (!confirm('Supprimer cette photo ?')) return;
+
+            const photoId = btn.dataset.photoId;
+
+            fetch('<?= BASE_URL ?>/partials/activities/delete_photo.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'photo_id=' + photoId
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        btn.closest('.photo-item').remove();
+                    } else {
+                        alert('Erreur lors de la suppression');
+                    }
+                });
+        });
+    });
+</script>

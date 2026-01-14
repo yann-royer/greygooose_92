@@ -156,6 +156,58 @@ if ($id) {
 
     $activityId = (int) $gd->lastInsertId();
 }
+/* =========================
+    5. PHOTOS UPLOAD
+    ========================= */
+
+if (!empty($_FILES['photos']['name'][0])) {
+
+    $uploadDir = __DIR__ . '/../../uploads/photos/';
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    $maxSize = 5 * 1024 * 1024; // 5 Mo
+
+    foreach ($_FILES['photos']['tmp_name'] as $index => $tmpName) {
+
+        if (!is_uploaded_file($tmpName)) {
+            continue;
+        }
+
+        $type = $_FILES['photos']['type'][$index];
+        $size = $_FILES['photos']['size'][$index];
+
+        if (!in_array($type, $allowedTypes)) {
+            continue;
+        }
+
+        if ($size > $maxSize) {
+            continue;
+        }
+
+        $extension = pathinfo(
+            $_FILES['photos']['name'][$index],
+            PATHINFO_EXTENSION
+        );
+
+        $filename = uniqid('photo_') . '.' . $extension;
+
+        if (!move_uploaded_file(
+            $tmpName,
+            $uploadDir . $filename
+        )) {
+            continue;
+        }
+
+        // INSERT DB
+        $stmt = $gd->prepare("
+                INSERT INTO photo (activity_id, link)
+                VALUES (:activity_id, :link)
+            ");
+        $stmt->execute([
+            'activity_id' => $activityId,
+            'link' => '/uploads/photos/' . $filename
+        ]);
+    }
+}
 
 /* =========================
    6. REDIRECT

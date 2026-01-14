@@ -133,6 +133,22 @@ if (
     echo "<p>This activity is visible only to followers.</p>";
     exit;
 }
+
+
+
+// 6️⃣ PHOTOS DE L’ACTIVITÉ
+$photosStmt = $gd->prepare("
+    SELECT id, link
+    FROM photo
+    WHERE activity_id = :activity_id
+    ORDER BY id ASC
+");
+$photosStmt->execute([
+    'activity_id' => $activityId
+]);
+
+$photos = $photosStmt->fetchAll();
+
 /* 5️⃣ AFFICHAGE */
 
 ?>
@@ -184,6 +200,27 @@ if (
                 <?php endif; ?>
 
             </header>
+
+
+            <?php if (!empty($photos)) : ?>
+                <section class="activity-photos-carousel">
+
+                    <div class="carousel-track">
+                        <?php foreach ($photos as $index => $photo) : ?>
+                            <div class="carousel-slide <?= $index === 0 ? 'active' : '' ?>">
+                                <img src="<?= BASE_URL . '/' . htmlspecialchars($photo['link']) ?>" alt="photo activité">
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <?php if (count($photos) > 1) : ?>
+                        <button class="carousel-btn prev">‹</button>
+                        <button class="carousel-btn next">›</button>
+                    <?php endif; ?>
+
+                </section>
+            <?php endif; ?>
+
 
             <?php if (!empty($activity['description'])) : ?>
                 <section class="activity-description">
@@ -291,3 +328,4 @@ if (
     window.CURRENT_USER_ID = <?= (int)$_SESSION['user_id'] ?>;
 </script>
 <script src="<?= BASE_URL ?>/partials/home/activity_feed.js"></script>
+<script src="<?= BASE_URL ?>/partials/activities/activity_carousel.js"></script>
