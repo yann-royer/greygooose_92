@@ -18,7 +18,7 @@ if (isset($_POST['gender'])) {
 
 //---Gestion de la photo---
 
-$ppPathToStore = null; // ce qu'on va stocker en DB (ex: uploads/profile_pics/abc.jpg)
+$ppPathToStore = $_SESSION['user_pp'] ?? null; // ce qu'on va stocker en DB (ex: uploads/profile_pics/abc.jpg)
 
 
 $uploadDir = __DIR__ . '/../../uploads/pp/'; // chemin physique
@@ -84,32 +84,40 @@ if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] !== UPLOAD_
 $sql = "UPDATE user 
         SET age = :age,
             name = :name,
-            family_name = :family_name,
+            f_name = :f_name,
             phone = :phone,
             gender = :gender,
             pp = :pp
         WHERE id = :id";
 
-$stmt = $gd->prepare($sql);
+$stmt = $pdo->prepare($sql);
 
 $ok = $stmt->execute([
     ':age'    => $_POST['age'],
     ':name'   => $_POST['name'],
-    ':family_name' => $_POST['family_name'],
+    ':f_name' => $_POST['f_name'],
     ':phone'  => $_POST['phone'],
     ':gender' => $gender,
     ':pp' => $ppPathToStore,
     ':id'     => $_SESSION['user_id']
 ]);
 
+$stmt = $pdo->prepare("SELECT * FROM user WHERE id = :id");
+$stmt->execute([':id' => $_SESSION['user_id']]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_name'] = $user['name'];
+$_SESSION['user_f_name'] = $user['f_name'];
+$_SESSION['user_pp'] = $user['pp'];
+$_SESSION['user_gender'] = $user['gender'];
+$_SESSION['user_email'] = $user['email'];
+$_SESSION['user_phone'] = $user['phone'];
+$_SESSION['user_age'] = $user['age'];
+
 if ($ok) {
-
-    $_SESSION['user_name'] = $_POST['name'];
-    $_SESSION['user_family_name'] = $_POST['family_name'];
-    $_SESSION['user_pp'] = $ppPathToStore;
-    $_SESSION['user_gender'] = $_POST['gender'];
-
-    header("Location:" . BASE_URL . "/pages/private/main_page.php");
+    $_SESSION['user_pp'] = $ppPathToStore . '?v=' . time();
+    header("Location: " . BASE_URL . "/pages/private/main_page.php");
     exit;
 } else {
     echo "<p>Erreur base de données.</p>";

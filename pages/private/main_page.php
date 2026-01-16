@@ -1,6 +1,7 @@
 <?php
 $currentPage = 'home';
 require __DIR__ . "/../../partials/layout/header.php";
+
 ?>
 
 <div class="main-layout">
@@ -18,3 +19,4 @@ require __DIR__ . "/../../partials/layout/header.php";
 </div>
 
 <?php require __DIR__ . "/../../partials/layout/footer.php"; ?>
+

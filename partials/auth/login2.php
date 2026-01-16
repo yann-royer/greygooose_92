@@ -10,7 +10,7 @@ if (!isset($_POST['email'], $_POST['pw'])) {
 
 // 1️⃣ Une seule requête
 $sql = "SELECT * FROM user WHERE email = :email";
-$stmt = $gd->prepare($sql);
+$stmt = $pdo->prepare($sql);
 $stmt->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
 $stmt->execute();
 

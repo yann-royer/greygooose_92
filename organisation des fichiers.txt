@@ -1,0 +1,36 @@
+GREYGOOSE_92/
+│
+├── pages/
+│   ├── public/
+│   │   ├── login.php
+│   │   ├── register.php
+│   │   └── forget_pw.php
+│   │
+│   └── private/
+│       └── main_page.php
+|       └── register3.php       
+│
+├── partials/
+│   ├── auth/
+│   │   ├── auth_check.php
+│   │   ├── login_handler.php
+│   │   ├── register_handler.php
+│   │   ├── register_step_2.php
+│   │   ├── register_step_3.php
+│   │   ├── register_step_4.php
+│   │   └── forget_pw_handler.php
+│   │
+│   ├── layout/
+│   │   ├── header.php
+│   │   └── footer.php
+│   │
+│   ├── db/
+│   │   └── db_connection.php
+│   │
+│   └── session/
+│       ├── start_session.php
+│       └── close_session.php
+│
+├── uploads/
+│
+└── .gitignore
