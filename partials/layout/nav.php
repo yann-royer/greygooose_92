@@ -10,7 +10,7 @@
 
         <li>
             <a class="navbar-link <?= ($currentPage ?? '') === 'profile' ? 'active' : '' ?>"
-                href="<?= BASE_URL ?>/pages/private/profile.php">
+                href="<?= BASE_URL ?>/pages/private/register3.php">
                 Profil
             </a>
         </li>

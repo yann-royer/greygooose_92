@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/../../partials/auth/auth_check.php';
-include __DIR__ . '/../../partials/db/BD_connexion.php';
 include __DIR__ . '/../../partials/layout/header.php';
 ?>
 
