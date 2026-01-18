@@ -1,3 +1,5 @@
+<?php if(!isset($_GET['register']) || $_GET['register'] === 0): ?>
+
 <nav class="navbar">
     <ul class="navbar-list">
 
@@ -10,7 +12,7 @@
 
         <li>
             <a class="navbar-link <?= ($currentPage ?? '') === 'profile' ? 'active' : '' ?>"
-                href="<?= BASE_URL ?>/pages/private/register3.php">
+                href="<?= BASE_URL ?>/pages/private/profil.php">
                 Profil
             </a>
         </li>
@@ -39,3 +41,5 @@
 
     </ul>
 </nav>
+
+<?php endif; ?>

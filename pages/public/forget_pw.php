@@ -1,41 +1,51 @@
 <?php
-// Chargement de la configuration globale (BASE_URL, constantes, etc.)
-require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../partials/layout/header_public.php';
 ?>
 
-<!DOCTYPE html>
-<html>
+<div class="auth-page">
+    <div class="auth-card">
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Forget Password</title>
-	<link rel="stylesheet" type="text/css" href="styles.css">
-</head>
+        <h1 class="auth-title">Forgot your password?</h1>
 
-<body>
-	<h1>Forgot your password ?</h1>
-	<br>
-	<form method="POST" action="<?= BASE_URL ?>/partials/auth/forget_pw2.php"> <!-- remplacer forget_pw2.php plus tard par forget_pw_handler -->
+        <?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
+            <div class="auth-alert error">
+                This email isn't associated to an account
+            </div>
+        <?php endif; ?>
 
-		<label for="email">Email</label>
-		<input type="email" name="email" id="email" placeholder="Write the email of your lost account">
+        <?php if (isset($_GET['pw'])): ?>
+            <div class="auth-alert success">
+                Your password is: <strong><?= htmlspecialchars($_GET['pw']) ?></strong>
+            </div>
+        <?php endif; ?>
 
-		<?php
-		if (isset($_GET['error']) && $_GET['error'] == 1) {
-			echo "<p style='color:red'>This email isn't associated to an account</p>";
-		}
+        <form
+            class="auth-form"
+            method="POST"
+            action="<?= BASE_URL ?>/partials/auth/forget_pw2.php"
+        >
 
-		if (isset($_GET['pw'])) {
-			echo "<h2>Your password is : " . htmlspecialchars($_GET['pw']) . "</h2>";
-		}
-		?>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Write the email of your lost account"
+                    required
+                >
+            </div>
 
-		<button type="submit">Find my Password</button>
+            <button type="submit" class="btn-primary">
+                Find my password
+            </button>
+        </form>
 
-	</form>
-	<a href="<?= BASE_URL ?>/pages/public/login.php">Log in</a>
+        <div class="auth-links">
+            <a href="<?= BASE_URL ?>/pages/public/login.php">Log in</a>
+        </div>
 
-</body>
+    </div>
+</div>
 
-</html>
+<?php require_once __DIR__ . '/../../partials/layout/footer.php'; ?>

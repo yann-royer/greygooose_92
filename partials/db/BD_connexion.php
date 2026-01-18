@@ -5,5 +5,6 @@ $user       = "root";
 $contrasena = "";
 
 $pdo = new PDO($dsn, $user, $contrasena);
+$gd = new PDO($dsn, $user, $contrasena);
 
 ?>

@@ -51,7 +51,7 @@ if ($okSelect && $stmt->rowCount() > 0) {
     $_SESSION['user_id'] = $user['id'];
 
     // Redirection vers la page de complétion du profil
-    header("Location: " . BASE_URL . "/pages/private/register3.php?register=1");  // remplacer register3.html plus tard par modification_profil.php
+    header("Location: " . BASE_URL . "/pages/private/profil.php?register=1");  // remplacer register3.html plus tard par modification_profil.php
 
     exit;
 } else {

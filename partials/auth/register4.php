@@ -84,7 +84,7 @@ if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] !== UPLOAD_
 $sql = "UPDATE user 
         SET age = :age,
             name = :name,
-            f_name = :f_name,
+            family_name = :family_name,
             phone = :phone,
             gender = :gender,
             pp = :pp
@@ -95,7 +95,7 @@ $stmt = $pdo->prepare($sql);
 $ok = $stmt->execute([
     ':age'    => $_POST['age'],
     ':name'   => $_POST['name'],
-    ':f_name' => $_POST['f_name'],
+    ':family_name' => $_POST['family_name'],
     ':phone'  => $_POST['phone'],
     ':gender' => $gender,
     ':pp' => $ppPathToStore,
@@ -108,7 +108,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['user_name'] = $user['name'];
-$_SESSION['user_f_name'] = $user['f_name'];
+$_SESSION['user_family_name'] = $user['family_name'];
 $_SESSION['user_pp'] = $user['pp'];
 $_SESSION['user_gender'] = $user['gender'];
 $_SESSION['user_email'] = $user['email'];
