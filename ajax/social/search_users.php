@@ -1,46 +1,35 @@
 <?php
-// Silence total côté PHP
-error_reporting(0);
-ini_set('display_errors', 0);
-
-// Réponse JSON propre
-header('Content-Type: application/json; charset=utf-8');
-
-// Config AJAX minimale
+header('Content-Type: application/json');
 require_once __DIR__ . '/../config_ajax.php';
 require_once __DIR__ . '/../../partials/db/BD_connexion.php';
 
-// Sécurité
-if (!isset($_GET['q'])) {
+$userId = $_SESSION['user_id'] ?? 0;
+if (!$userId) {
     echo json_encode([]);
     exit;
 }
 
-$query = trim($_GET['q']);
-if ($query === '') {
-    echo json_encode([]);
+if (!isset($_GET['q']) || trim($_GET['q']) === '') {
+    $stmt = $pdo->prepare("
+        SELECT u.id, u.name, u.family_name, u.pp, r.status
+        FROM user u
+        LEFT JOIN relations r ON r.user_id = ? AND r.target_id = u.id
+        WHERE u.id != ? AND (r.status IS NULL OR r.status != 'accepted')
+        ORDER BY u.id DESC LIMIT 8
+    ");
+    $stmt->execute([$userId, $userId]);
+    echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     exit;
 }
 
-// Utilisateur connecté
-$userId = $_SESSION['user']['id'] ?? 0;
-
-// Requête SQL
+$query = trim($_GET['q']) . '%';
 $stmt = $pdo->prepare("
-    SELECT id, name, family_name, pp
-    FROM user
-    WHERE (name LIKE ? OR family_name LIKE ?)
-    AND id != ?
-    ORDER BY name ASC
-    LIMIT 10
+    SELECT u.id, u.name, u.family_name, u.pp, r.status
+    FROM user u
+    LEFT JOIN relations r ON r.user_id = ? AND r.target_id = u.id
+    WHERE (u.name LIKE ? OR u.family_name LIKE ?) AND u.id != ?
+    ORDER BY u.name LIMIT 10
 ");
-
-$stmt->execute([
-    $query . '%',
-    $query . '%',
-    $userId
-]);
-
+$stmt->execute([$userId, $query, $query, $userId]);
 echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 exit;
-

@@ -3,3 +3,5 @@ uploads/pp/*
 
 # MAIS garder l'image par défaut
 !uploads/pp/default.webp
+.DS_Store
+
