@@ -1,8 +1,12 @@
 <?php
-// Sécurité : utilisateur connecté
+// =======================
+// Données sociales utilisateur
+// =======================
+
+// Utilisateur connecté
 $userId = $_SESSION['user_id'];
 
-// Nombre d'abonnements (je suis celui qui suit)
+// Abonnements (je suis celui qui suit)
 $stmtFollowing = $pdo->prepare("
     SELECT COUNT(*) 
     FROM relations 
@@ -12,7 +16,7 @@ $stmtFollowing = $pdo->prepare("
 $stmtFollowing->execute([$userId]);
 $followingCount = $stmtFollowing->fetchColumn();
 
-// Nombre d'abonnés (je suis celui qui est suivi)
+// Abonnés (ils me suivent)
 $stmtFollowers = $pdo->prepare("
     SELECT COUNT(*) 
     FROM relations 
@@ -31,34 +35,32 @@ $followersCount = $stmtFollowers->fetchColumn();
     <div class="social-search">
         <input
             type="text"
+            id="social-search-input"
             placeholder="Rechercher un athlète..."
-            disabled
+            data-search-url="<?= BASE_URL ?>/ajax/social/search_users.php"
         >
-        <p style="font-size: 0.85em; color: #777;">
-            La recherche sera bientôt disponible
-        </p>
     </div>
 
     <!-- Statistiques sociales -->
     <div class="social-stats">
-    <strong><?= $followingCount ?> abonnements</strong>
-    •
-    <strong><?= $followersCount ?> abonnés</strong>
+        <strong><?= $followingCount ?> abonnements</strong>
+        •
+        <strong><?= $followersCount ?> abonnés</strong>
     </div>
-
 
     <!-- Résultats de recherche -->
     <div class="social-results">
         <h2>Résultats</h2>
-        <p>Aucun résultat pour le moment</p>
+        <div id="social-results-list" style="border: 3px solid blue; min-height: 100px;">
+    <p>ZONE RÉSULTATS (TEST)</p>
+</div>
+
     </div>
 
     <!-- Suggestions -->
     <div class="social-suggestions">
         <h2>Suggestions pour vous</h2>
-        <p>Aucune suggestion pour le moment</p>
+        <p>(à venir)</p>
     </div>
 
 </section>
-
-
