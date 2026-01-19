@@ -4,6 +4,22 @@ const BASE_URL = "/greygooose_92";
 
 document.addEventListener("DOMContentLoaded", function () {
     loadSuggestions();
+
+    const followingLink = document.getElementById("following-link");
+    const followersLink = document.getElementById("followers-link");
+
+    if (followingLink) {
+        followingLink.addEventListener("click", function () {
+            loadFollowing();
+        });
+    }
+
+    if (followersLink) {
+        followersLink.addEventListener("click", function () {
+            loadFollowers();
+        });
+    }
+
     if (input) {
         input.addEventListener("input", function () {
             const q = input.value.trim();
@@ -16,6 +32,20 @@ function loadSuggestions() {
     fetch(BASE_URL + "/ajax/social/search_users.php")
         .then(r => r.json())
         .then(users => showResults(users, "Suggestions for you"))
+        .catch(err => console.error(err));
+}
+
+function loadFollowing() {
+    fetch(BASE_URL + "/ajax/social/get_following.php")
+        .then(r => r.json())
+        .then(users => showResults(users, "Following"))
+        .catch(err => console.error(err));
+}
+
+function loadFollowers() {
+    fetch(BASE_URL + "/ajax/social/get_followers.php")
+        .then(r => r.json())
+        .then(users => showResults(users, "Followers"))
         .catch(err => console.error(err));
 }
 

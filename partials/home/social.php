@@ -14,7 +14,8 @@ $followersCount = $stmtFollowers->fetchColumn();
     <h1>Social Network</h1>
 
     <div class="social-stats">
-        <strong><?= $followingCount ?> following</strong> • <strong><?= $followersCount ?> followers</strong>
+        <strong id="following-link" class="stat-clickable"><?= $followingCount ?> following</strong> • 
+        <strong id="followers-link" class="stat-clickable"><?= $followersCount ?> followers</strong>
     </div>
 
     <div class="social-search">
@@ -44,6 +45,17 @@ $followersCount = $stmtFollowers->fetchColumn();
     margin-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
     font-size: 1.1em;
+}
+
+.stat-clickable {
+    cursor: pointer;
+    color: #007bff;
+    transition: color 0.2s;
+}
+
+.stat-clickable:hover {
+    color: #0056b3;
+    text-decoration: underline;
 }
 
 .social-search {
