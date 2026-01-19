@@ -11,11 +11,15 @@ require_once __DIR__ . '/../../partials/layout/header_public.php';
             <div class="auth-alert error">
                 This email isn't associated to an account
             </div>
-        <?php endif; ?>
 
-        <?php if (isset($_GET['pw'])): ?>
+        <?php elseif (isset($_GET['error']) && $_GET['error'] == 2): ?>
             <div class="auth-alert success">
-                Your password is: <strong><?= htmlspecialchars($_GET['pw']) ?></strong>
+                An error occured, we can't send you an email
+            </div>
+
+        <?php elseif  (isset($_GET['error']) && $_GET['error'] == 0): ?>
+            <div class="auth-alert success">
+                You will find your password in your inbox
             </div>
         <?php endif; ?>
 
