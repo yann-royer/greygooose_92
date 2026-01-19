@@ -49,12 +49,12 @@ $followersCount = $stmtFollowers->fetchColumn();
 
 .stat-clickable {
     cursor: pointer;
-    color: #007bff;
+    color: #ff8800;
     transition: color 0.2s;
 }
 
 .stat-clickable:hover {
-    color: #0056b3;
+    color: #cc6d00;
     text-decoration: underline;
 }
 
@@ -72,7 +72,7 @@ $followersCount = $stmtFollowers->fetchColumn();
 
 .social-search input:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #ff8800;
 }
 
 .social-results {
@@ -129,12 +129,12 @@ $followersCount = $stmtFollowers->fetchColumn();
 }
 
 .social-user-card .btn-follow {
-    background: #007bff;
+    background: #ff8800;
     color: white;
 }
 
 .social-user-card .btn-follow:hover:not(:disabled) {
-    background: #0056b3;
+    background: #cc6d00;
 }
 
 .social-user-card .btn-following {
