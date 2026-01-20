@@ -26,7 +26,7 @@
 
         <li>
             <a class="navbar-link <?= ($currentPage ?? '') === 'social' ? 'active' : '' ?>"
-                href="<?= BASE_URL ?>/pages/private/social.php">
+                href="<?= BASE_URL ?>/pages/private/social/index.php">
                 Social
             </a>
         </li>
