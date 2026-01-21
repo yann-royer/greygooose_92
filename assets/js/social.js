@@ -71,11 +71,18 @@ function showResults(users, title) {
         const photo = user.pp || BASE_URL + "/uploads/pp/default.webp";
         const btnText = user.status === 'accepted' ? "Following" : "Follow";
         const btnClass = user.status === 'accepted' ? "btn-following" : "btn-follow";
+        const canViewProfile = user.status === 'accepted';
 
         div.innerHTML = `
             <div class="user-info">
-                <img src="${photo}" class="user-avatar">
-                <div><strong>${user.name} ${user.family_name}</strong></div>
+                ${canViewProfile
+                    ? `<a href="${BASE_URL}/pages/private/profil.php?id=${user.id}" class="user-link"><img src="${photo}" class="user-avatar"></a>`
+                    : `<span class="user-avatar-wrapper"><img src="${photo}" class="user-avatar"></span>`}
+                <div>
+                    ${canViewProfile
+                        ? `<a href="${BASE_URL}/pages/private/profil.php?id=${user.id}" class="user-link"><strong>${user.name} ${user.family_name}</strong></a>`
+                        : `<span class="user-name">${user.name} ${user.family_name}</span>`}
+                </div>
             </div>
             <button class="btn ${btnClass}" onclick="toggleFollow(${user.id}, this)">${btnText}</button>
         `;

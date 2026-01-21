@@ -12,7 +12,7 @@
 
         <li>
             <a class="navbar-link <?= ($currentPage ?? '') === 'profile' ? 'active' : '' ?>"
-                href="<?= BASE_URL ?>/pages/private/profil.php">
+                href="<?= BASE_URL ?>/pages/private/profil.php?id=<?= $_SESSION['user_id'] ?>">
                 Profil
             </a>
         </li>

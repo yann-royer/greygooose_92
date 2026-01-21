@@ -151,6 +151,20 @@ $followersCount = $stmtFollowers->fetchColumn();
     cursor: not-allowed;
 }
 
+.user-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.user-link:hover {
+    text-decoration: underline;
+}
+
+.user-name {
+    color: #333;
+    font-weight: 600;
+}
+
 .no-results {
     padding: 20px;
     text-align: center;
