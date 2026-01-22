@@ -69,19 +69,23 @@ function showResults(users, title) {
         const div = document.createElement("div");
         div.className = "social-user-card";
         const photo = user.pp || BASE_URL + "/uploads/pp/default.webp";
-        const btnText = user.status === 'accepted' ? "Following" : "Follow";
-        const btnClass = user.status === 'accepted' ? "btn-following" : "btn-follow";
+        let btnText = "Follow";
+        let btnClass = "btn-follow";
+        if (user.status === 'accepted') {
+            btnText = "Following";
+            btnClass = "btn-following";
+        }
         const canViewProfile = user.status === 'accepted';
 
         div.innerHTML = `
             <div class="user-info">
                 ${canViewProfile
-                    ? `<a href="${BASE_URL}/pages/private/profil.php?id=${user.id}" class="user-link"><img src="${photo}" class="user-avatar"></a>`
-                    : `<span class="user-avatar-wrapper"><img src="${photo}" class="user-avatar"></span>`}
+                ? `<a href="${BASE_URL}/pages/private/profil.php?id=${user.id}" class="user-link"><img src="${photo}" class="user-avatar"></a>`
+                : `<span class="user-avatar-wrapper"><img src="${photo}" class="user-avatar"></span>`}
                 <div>
                     ${canViewProfile
-                        ? `<a href="${BASE_URL}/pages/private/profil.php?id=${user.id}" class="user-link"><strong>${user.name} ${user.family_name}</strong></a>`
-                        : `<span class="user-name">${user.name} ${user.family_name}</span>`}
+                ? `<a href="${BASE_URL}/pages/private/profil.php?id=${user.id}" class="user-link"><strong>${user.name} ${user.family_name}</strong></a>`
+                : `<span class="user-name">${user.name} ${user.family_name}</span>`}
                 </div>
             </div>
             <button class="btn ${btnClass}" onclick="toggleFollow(${user.id}, this)">${btnText}</button>
@@ -93,32 +97,49 @@ function showResults(users, title) {
 function toggleFollow(userId, btn) {
     btn.disabled = true;
     const originalText = btn.textContent;
+    const originalClass = btn.className;
     btn.textContent = "...";
 
-    fetch(BASE_URL + "/ajax/social/follow_toggle.php", {
+    const url = BASE_URL + "/ajax/social/follow_toggle.php";
+    console.log("Fetching URL:", url);
+
+    fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ target_id: userId })
     })
-        .then(r => r.json())
+        .then(r => {
+            if (!r.ok) {
+                throw new Error(`HTTP error! status: ${r.status}`);
+            }
+            return r.json();
+        })
         .then(data => {
+            console.log("Follow toggle response:", data);
             if (data.success) {
                 if (data.action === 'followed') {
                     btn.textContent = "Following";
                     btn.className = "btn btn-following";
-                } else {
+                    btn.disabled = false;
+                } else if (data.action === 'unfollowed' || data.action === 'cancelled') {
                     btn.textContent = "Follow";
                     btn.className = "btn btn-follow";
+                    btn.disabled = false;
+                } else {
+                    btn.disabled = false;
                 }
             } else {
-                alert("Error");
+                console.error("Follow toggle failed:", data);
                 btn.textContent = originalText;
+                btn.className = originalClass;
+                btn.disabled = false;
             }
         })
         .catch(err => {
-            console.error(err);
-            alert("Error");
+            console.error("Toggle follow error:", err);
+            alert("Error: Could not connect to server. Check console for details.");
             btn.textContent = originalText;
-        })
-        .finally(() => btn.disabled = false);
+            btn.className = originalClass;
+            btn.disabled = false;
+        });
 }

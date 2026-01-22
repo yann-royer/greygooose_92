@@ -29,6 +29,16 @@ $followersCount = $stmtFollowers->fetchColumn();
 </section>
 
 <style>
+body {
+    overflow-y: auto !important;
+}
+
+.content {
+    overflow-y: auto;
+    height: auto;
+    min-height: calc(100vh - 60px);
+}
+
 .social-page {
     max-width: 800px;
     margin: 0 auto;
@@ -144,6 +154,13 @@ $followersCount = $stmtFollowers->fetchColumn();
 
 .social-user-card .btn-following:hover:not(:disabled) {
     background: #5a6268;
+}
+
+.social-user-card .btn-pending {
+    background: #6c757d;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 .social-user-card .btn:disabled {
