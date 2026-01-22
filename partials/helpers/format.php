@@ -1,18 +1,15 @@
-<!-- format.php = fct pour le formatage de l'allure -->
 <?php
 function formatAllure($duration, $distance)
 {
     if ($distance <= 0) return '-';
 
-    $secondsPerKm = $duration / $distance;
-    $minutes = floor($secondsPerKm / 60);
-    $seconds = floor($secondsPerKm % 60);
+    $secondsPerKm = (float)($duration / $distance);
+    $totalSeconds = (int)$secondsPerKm;
+    $minutes = (int)($totalSeconds / 60);
+    $seconds = (int)($totalSeconds % 60);
 
     return sprintf("%d:%02d /km", $minutes, $seconds);
 }
-
-
-//<!-- format.php = fct pour le formatage de la durée -->
 
 function formatDuration($seconds)
 {
@@ -39,9 +36,6 @@ function formatDuration($seconds)
 
     return implode(' ', $parts);
 }
-
-
-//<!-- activity_feed.php = fct pour le formatage de la date d'activité -->
 
 
 function formatActivityDate($dateTime)

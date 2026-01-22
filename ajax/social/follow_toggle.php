@@ -17,14 +17,32 @@ if ($targetId == 0 || $targetId == $userId) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT id FROM relations WHERE user_id = ? AND target_id = ?");
+$stmt = $pdo->prepare("SELECT id, status FROM relations WHERE user_id = ? AND target_id = ?");
 $stmt->execute([$userId, $targetId]);
+$relation = $stmt->fetch();
 
-if ($stmt->fetch()) {
-    $pdo->prepare("DELETE FROM relations WHERE user_id = ? AND target_id = ?")->execute([$userId, $targetId]);
-    echo json_encode(['success' => true, 'action' => 'unfollowed']);
+if ($relation) {
+    if ($relation['status'] === 'accepted') {
+        $deleteStmt = $pdo->prepare("DELETE FROM relations WHERE user_id = ? AND target_id = ?");
+        if ($deleteStmt->execute([$userId, $targetId])) {
+            echo json_encode(['success' => true, 'action' => 'unfollowed']);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'delete_failed']);
+        }
+    } else {
+        $deleteStmt = $pdo->prepare("DELETE FROM relations WHERE user_id = ? AND target_id = ?");
+        if ($deleteStmt->execute([$userId, $targetId])) {
+            echo json_encode(['success' => true, 'action' => 'cancelled']);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'cancel_failed']);
+        }
+    }
 } else {
-    $pdo->prepare("INSERT INTO relations (user_id, target_id, status) VALUES (?, ?, 'accepted')")->execute([$userId, $targetId]);
-    echo json_encode(['success' => true, 'action' => 'followed']);
+    $insertStmt = $pdo->prepare("INSERT INTO relations (user_id, target_id, status) VALUES (?, ?, 'accepted')");
+    if ($insertStmt->execute([$userId, $targetId])) {
+        echo json_encode(['success' => true, 'action' => 'followed']);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'insert_failed']);
+    }
 }
 exit;
